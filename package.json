@@ -1,22 +1,22 @@
 {
-  "name": "4a00ez62-3001-group07",
+  "name": "Todoback",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LeeviKu/4a00ez62-3001-group07.git"
+    "url": "git+https://github.com/LeeviKu/Todoback.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/LeeviKu/4a00ez62-3001-group07/issues"
+    "url": "https://github.com/LeeviKu/Todoback/issues"
   },
-  "homepage": "https://github.com/LeeviKu/4a00ez62-3001-group07#readme",
+  "homepage": "https://github.com/LeeviKu/Todoback#readme",
   "devDependencies": {
     "eslint": "^7.13.0",
     "eslint-config-standard": "^16.0.1",

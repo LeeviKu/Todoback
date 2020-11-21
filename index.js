@@ -9,11 +9,6 @@ app.use(express.json())
 app.use('/tasks', tasks)
 
 const port = process.env.PORT || 8080
-const db = [{ name: 'tiina' }, { name: 'jack' }]
-
-app.get('/api/names', (req, res) => {
-  res.send(db)
-})
 
 crud.connect().then(console.log('connected')).catch(err => console.log(err))
 

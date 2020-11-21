@@ -12,9 +12,18 @@ class crudRepository {
     })
   }
 
-  static findAll () {
+  static findAllTasks () {
     return new Promise((resolve, reject) => {
       this.pool.query('SELECT * FROM task', (err, result) => {
+        if (err) reject(err)
+        resolve(result)
+      })
+    })
+  }
+
+  static findTaskById (id) {
+    return new Promise((resolve, reject) => {
+      this.pool.query('SELECT * FROM task WHERE id = ?', id, (err, result) => {
         if (err) reject(err)
         resolve(result)
       })

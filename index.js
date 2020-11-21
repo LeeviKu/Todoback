@@ -15,7 +15,7 @@ app.get('/api/names', (req, res) => {
   res.send(db)
 })
 
-crud.connect()
+crud.connect().then(console.log('connected')).catch(err => console.log(err))
 
 const server = app.listen(port, () => {
   console.log(`Listening on port ${server.address().port}`)

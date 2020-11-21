@@ -29,6 +29,15 @@ class crudRepository {
       })
     })
   }
+
+  static saveTask (task) {
+    return new Promise((resolve, reject) => {
+      this.pool.query('INSERT INTO task SET ?', task, (err, result) => {
+        if (err) reject(err)
+        resolve(result)
+      })
+    })
+  }
 }
 
 module.exports = crudRepository

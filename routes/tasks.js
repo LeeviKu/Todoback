@@ -6,7 +6,7 @@ const router = express.Router();
 router.use(express.json());
 
 router.get("/", async (req, res) => {
-  const response = await crud.findAllTasks();
+  const response = await crud.findAllTasks(req.query, res);
   res.send(response);
 });
 

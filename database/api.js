@@ -29,8 +29,12 @@ class crudRepository {
 
   static findAllTasks(query, res) {
     return new Promise((resolve, reject) => {
-      const queryParams = { orderby: "", limit: "", offset: "" };
+      const queryParams = { orderby: "", limit: "", offset: "", search: "" };
       this.paramHandler = new queryParamHandler(res, reject, this.pool);
+
+      if (query.search) {
+        queryParams.search = this.paramHandler.search(query.search);
+      }
 
       if (query.limit) {
         queryParams.limit = this.paramHandler.limit(query.limit);
@@ -49,6 +53,7 @@ class crudRepository {
 
       this.pool.query(
         "SELECT * FROM task" +
+          queryParams.search +
           queryParams.orderby +
           queryParams.limit +
           queryParams.offset,

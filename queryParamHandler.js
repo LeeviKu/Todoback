@@ -27,9 +27,13 @@ class queryParamHandler {
     }
 
     return " ORDER BY " + this.pool.escapeId(orderBy) + order;
-  };
+  }
 
-  limit(limit){
+  search(str) {
+    return ` WHERE MATCH(name, description) AGAINST(${this.pool.escape(str)}) `;
+  }
+
+  limit(limit) {
     if (isNaN(limit)) {
       this.res.status(400);
       this.res.send({ msg: "Limit has to be a number" });
@@ -43,7 +47,7 @@ class queryParamHandler {
     }
 
     return " LIMIT " + this.pool.escape(Number(limit));
-  };
+  }
 
   offset(offset, limit) {
     if (!limit) {
@@ -65,7 +69,7 @@ class queryParamHandler {
     }
 
     return " OFFSET " + this.pool.escape(Number(offset));
-  };
+  }
 }
 
 module.exports = queryParamHandler;

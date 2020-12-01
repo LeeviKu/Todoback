@@ -38,7 +38,6 @@ function getIsDoneState(originalResponse) {
 router.post("/check/:id([0-9]+)", async (req, res) => {
   const task = await crud.findTaskById(Number(req.params.id));
   const taskIsDoneState = await getIsDoneState(task);
-  console.log(taskIsDoneState);
   await crud.updateIsDone(req.params.id, taskIsDoneState);
   res.send(task);
 });

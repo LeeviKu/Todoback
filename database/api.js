@@ -13,27 +13,50 @@ class crudRepository {
     });
   }
 
+  static updateIsDone(id, isDoneState) {
+    return new Promise((resolve, reject) => {
+      const newValue = isDoneState ? 0 : 1;
+      this.pool.query(
+        `UPDATE task SET is_done = ${newValue} WHERE id = ?`,
+        id,
+        (err, result) => {
+          if (err) reject(err);
+          resolve(result);
+        }
+      );
+    });
+  }
+
   static findAllTasks(query, res) {
     return new Promise((resolve, reject) => {
-      const queryParams = { "orderby": "" ,"limit": "", "offset": ""}
-      this.paramHandler = new queryParamHandler(res, reject, this.pool)
+      const queryParams = { orderby: "", limit: "", offset: "" };
+      this.paramHandler = new queryParamHandler(res, reject, this.pool);
 
       if (query.limit) {
-        queryParams.limit = this.paramHandler.limit(query.limit)
+        queryParams.limit = this.paramHandler.limit(query.limit);
       }
 
       if (query.offset) {
-        queryParams.offset = this.paramHandler.offset(query.offset, query.limit)
+        queryParams.offset = this.paramHandler.offset(
+          query.offset,
+          query.limit
+        );
       }
 
       if (query.sort) {
-        queryParams.orderby = this.paramHandler.sort(query.sort)
+        queryParams.orderby = this.paramHandler.sort(query.sort);
       }
 
-      this.pool.query("SELECT * FROM task" + queryParams.orderby + queryParams.limit + queryParams.offset, (err, result) => {
-        if (err) reject(err);
-        resolve(result);
-      });
+      this.pool.query(
+        "SELECT * FROM task" +
+          queryParams.orderby +
+          queryParams.limit +
+          queryParams.offset,
+        (err, result) => {
+          if (err) reject(err);
+          resolve(result);
+        }
+      );
     });
   }
 

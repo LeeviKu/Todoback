@@ -27,6 +27,22 @@ router.post("/", async (req, res) => {
   res.send(task);
 });
 
+function getIsDoneState(originalResponse) {
+  const stringifiedResponse = JSON.stringify(originalResponse);
+  const objectifiedResponse = JSON.parse(
+    stringifiedResponse.substring(1, stringifiedResponse.length - 1)
+  );
+  return objectifiedResponse.is_done;
+}
+
+router.post("/check/:id([0-9]+)", async (req, res) => {
+  const task = await crud.findTaskById(Number(req.params.id));
+  const taskIsDoneState = await getIsDoneState(task);
+  console.log(taskIsDoneState);
+  await crud.updateIsDone(req.params.id, taskIsDoneState);
+  res.send(task);
+});
+
 router.delete("/:urlId([1-9]+$)", async (req, res) => {
   const id = Number(req.params.urlId);
   const response = await crud.deleteTask(id);

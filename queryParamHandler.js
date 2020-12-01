@@ -5,7 +5,7 @@ class queryParamHandler {
     this.pool = pool
   }
 
-  sort = (sort) => {
+  sort(sort) {
     const orderBy = sort.slice(1);
     let order = sort.slice(0, 1);
 
@@ -28,7 +28,7 @@ class queryParamHandler {
     return " ORDER BY " + this.pool.escapeId(orderBy) + order
   }
 
-  limit = (limit) => {
+  limit(limit){
     if (isNaN(limit)) {
       this.res.status(400)
       this.res.send({ "msg": "Limit has to be a number"})
@@ -44,7 +44,7 @@ class queryParamHandler {
     return " LIMIT " + this.pool.escape(Number(limit))
   }
 
-  offset = (offset, limit) => {
+  offset(offset, limit) {
     if (!limit) {
       this.res.status(400)
       this.res.send({ "msg": "Can't use offset without limit"})

@@ -5,7 +5,7 @@ class queryParamHandler {
     this.pool = pool;
   }
 
-  sort(sort) {
+  sort (sort) {
     const orderBy = sort.slice(1);
     let order = sort.slice(0, 1);
 
@@ -24,6 +24,7 @@ class queryParamHandler {
     if (!sortSet.has(orderBy)) {
       this.res.status(400);
       this.res.send({ msg: "You can only sort by deadline, name or priority" });
+      this.reject(new Error("You can only sort by deadline, name or priority"));
     }
 
     return " ORDER BY " + this.pool.escapeId(orderBy) + order;

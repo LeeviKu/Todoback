@@ -7,6 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/tasks", tasks);
+app.use(express.static("frontend/build"));
 
 const port = process.env.PORT || 8080;
 

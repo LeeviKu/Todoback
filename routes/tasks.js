@@ -21,7 +21,8 @@ router.post("/", async (req, res) => {
     req.body.name,
     req.body.description,
     req.body.priority,
-    req.body.deadline
+    req.body.deadline,
+    req.body.list_id
   );
   await crud.saveTask(task);
   res.send(task);

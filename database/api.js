@@ -94,7 +94,7 @@ class crudRepository {
 
   static saveList(name) {
     return new Promise((resolve, reject) => {
-      this.pool.query("INSERT INTO list (list_name) VALUES (?)", name, (err, result) => {
+      this.pool.query("INSERT INTO list SET list_name=?", name, (err, result) => {
         if (err) reject(err);
         resolve(result);
       });

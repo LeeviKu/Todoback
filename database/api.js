@@ -91,6 +91,42 @@ class crudRepository {
       });
     });
   }
+
+  static saveList(name) {
+    return new Promise((resolve, reject) => {
+      this.pool.query("INSERT INTO list (list_name) VALUES (?)", name, (err, result) => {
+        if (err) reject(err);
+        resolve(result);
+      });
+    });
+  }
+
+  static findAllLists() {
+    return new Promise((resolve, reject) => {
+      this.pool.query("SELECT * FROM list",(err, result) => {
+        if (err) reject(err);
+        resolve(result);
+      });
+    });
+  }
+
+  static findListById(id) {
+    return new Promise((resolve, reject) => {
+      this.pool.query("SELECT * FROM list WHERE id = ?", id, (err, result) => {
+        if (err) reject(err);
+        resolve(result);
+      });
+    });
+  }
+
+    static deleteList(id) {
+      return new Promise((resolve, reject) => {
+        this.pool.query("DELETE FROM list WHERE id = ?", id, (err, result) => {
+          if (err) reject(err);
+          resolve(result);
+        });
+      });
+    }
 }
 
-module.exports = crudRepository;
+module.exports = crudRepository

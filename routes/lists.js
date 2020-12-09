@@ -15,7 +15,7 @@ router.get("/:id([0-9]+)", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  await crud.saveTask(req.body.list_name);
+  await crud.saveList(req.body.list_name);
   res.send(req.body.list_name);
 });
 

@@ -29,11 +29,15 @@ class crudRepository {
 
   static findAllTasks(query, res) {
     return new Promise((resolve, reject) => {
-      const queryParams = { orderby: "", limit: "", offset: "", search: "" };
+      const queryParams = { orderby: "", limit: "", offset: "", search: "", list: "", searchFromList: "" };
       this.paramHandler = new queryParamHandler(res, reject, this.pool);
 
-      if (query.search) {
+      if (query.search && query.list) {
+        queryParams.searchFromList = this.paramHandler.searchFromList(query.search, query.list);
+      } else if (query.search) {
         queryParams.search = this.paramHandler.search(query.search);
+      } else if (query.list) {
+        queryParams.list = this.paramHandler.list(query.list)
       }
 
       if (query.limit) {
@@ -51,11 +55,21 @@ class crudRepository {
         queryParams.orderby = this.paramHandler.sort(query.sort);
       }
 
+      console.log("SELECT * FROM task" +
+      queryParams.search +
+      queryParams.searchFromList + 
+      queryParams.list + 
+      queryParams.orderby +
+      queryParams.limit + 
+      queryParams.offset)
+
       this.pool.query(
         "SELECT * FROM task" +
           queryParams.search +
+          queryParams.searchFromList + 
+          queryParams.list + 
           queryParams.orderby +
-          queryParams.limit +
+          queryParams.limit + 
           queryParams.offset,
         (err, result) => {
           if (err) reject(err);

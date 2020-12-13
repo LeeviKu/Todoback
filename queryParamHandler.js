@@ -17,7 +17,7 @@ class queryParamHandler {
     } else {
       this.res.status(400);
       this.res.send({ msg: "sort query should start with a - or +" });
-      reject(new Error("sort query should start with a - or +"));
+      this.reject(new Error("sort query should start with a - or +"));
     }
 
     const sortSet = new Set(["deadline", "name", "priority"]);
@@ -38,13 +38,13 @@ class queryParamHandler {
     if (isNaN(limit)) {
       this.res.status(400);
       this.res.send({ msg: "Limit has to be a number" });
-      reject(new Error("Limit has to be a number"));
+      this.reject(new Error("Limit has to be a number"));
     }
 
     if (Number(limit <= 0)) {
       this.res.status(400);
       this.res.send({ msg: "Limit has to be > 0" });
-      reject(new Error("Limit has to be > 0"));
+      this.reject(new Error("Limit has to be > 0"));
     }
 
     return " LIMIT " + this.pool.escape(Number(limit));
@@ -54,22 +54,46 @@ class queryParamHandler {
     if (!limit) {
       this.res.status(400);
       this.res.send({ msg: "Can't use offset without limit" });
-      reject(new Error("Can't use offset without limit"));
+      this.reject(new Error("Can't use offset without limit"));
     }
 
     if (isNaN(offset)) {
       this.res.status(400);
       this.res.send({ msg: "Offset has to be a number" });
-      reject(new Error("Offset has to be a number"));
+      this.reject(new Error("Offset has to be a number"));
     }
 
     if (Number(offset <= 0)) {
       this.res.status(400);
       this.res.send({ msg: "Offset has to be > 0" });
-      reject(new Error("Offset has to be > 0"));
+      this.reject(new Error("Offset has to be > 0"));
     }
 
     return " OFFSET " + this.pool.escape(Number(offset));
+  }
+
+  list(list) {
+    this.validateList(list);
+    return " WHERE list_id = " + this.pool.escape(Number(list))
+  }
+
+  searchFromList(search, list) {
+    this.validateList(list)
+    return this.search(search) + "AND list_id = " + this.pool.escape(Number(list))
+  }
+
+  validateList(list) {
+    if (isNaN(list)) {
+      this.res.status(400);
+      this.res.send({ msg: "List has to be a number" })
+      this.reject(new Error("List has to be a number"))
+    }
+
+    if (Number(list) <= 0) {
+      this.res.status(400);
+      this.res.send({ msg: "List has to be > 0" });
+      this.reject(new Error("List has to be > 0"));
+    }
   }
 }
 

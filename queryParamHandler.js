@@ -89,10 +89,10 @@ class queryParamHandler {
       this.reject(new Error("List has to be a number"))
     }
 
-    if (Number(list) <= 0) {
+    if (Number(list) < 0) {
       this.res.status(400);
-      this.res.send({ msg: "List has to be > 0" });
-      this.reject(new Error("List has to be > 0"));
+      this.res.send({ msg: "List has to be >= 0" });
+      this.reject(new Error("List has to be >= 0"));
     }
   }
 }

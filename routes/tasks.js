@@ -43,7 +43,7 @@ router.post("/check/:id([0-9]+)", async (req, res) => {
   res.send(task);
 });
 
-router.delete("/:urlId([1-9]+$)", async (req, res) => {
+router.delete("/:urlId([0-9]+$)", async (req, res) => {
   const id = Number(req.params.urlId);
   const response = await crud.deleteTask(id);
   res.send(response);

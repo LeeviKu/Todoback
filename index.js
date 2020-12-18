@@ -7,8 +7,8 @@ const crud = require("./database/api.js");
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use("/tasks", tasks);
-app.use("/lists", lists);
+app.use("/api/tasks", tasks);
+app.use("/api/lists", lists);
 app.use(express.static("frontend/build"));
 
 const port = process.env.PORT || 8080;

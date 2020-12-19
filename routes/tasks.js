@@ -6,12 +6,16 @@ const router = express.Router();
 router.use(express.json());
 
 router.get("/", async (req, res) => {
-  const response = await crud.findAllTasks(req.query, res);
+  const response = await crud.findAllTasks(req.query, res).catch((error) => {
+    console.error(error)
+  })
   res.send(response);
 });
 
 router.get("/:id([0-9]+)", async (req, res) => {
-  const response = await crud.findTaskById(Number(req.params.id));
+  const response = await crud.findTaskById(Number(req.params.id)).catch((error) => {
+    console.error(error)
+  });
   res.send(response);
 });
 
@@ -24,7 +28,7 @@ router.post("/", async (req, res) => {
     req.body.deadline,
     req.body.list_id
   );
-  await crud.saveTask(task);
+  await crud.saveTask(task).catch((error) => console.error(error));
   res.send(task);
 });
 
@@ -45,7 +49,9 @@ router.post("/check/:id([0-9]+)", async (req, res) => {
 
 router.delete("/:urlId([0-9]+$)", async (req, res) => {
   const id = Number(req.params.urlId);
-  const response = await crud.deleteTask(id);
+  const response = await crud.deleteTask(id).catch((error) => {
+    console.error(error)
+  });
   res.send(response);
 });
 

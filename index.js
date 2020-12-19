@@ -7,6 +7,22 @@ const crud = require("./database/api.js");
 const app = express();
 app.use(cors());
 app.use(express.json());
+// checks apikey
+app.use('/api', async function (req, res, next) {
+  let keyFound = false;
+  const apikeys = await crud.getApikeys()
+  await apikeys.map((key) => {
+    if (key.apikey === Number(req.query.apikey)) {
+      keyFound = true;
+      next()
+    }
+  })
+  if (!keyFound) {
+  res.status(400)
+  res.send({msg: "Apikey is not correct"})
+  console.error(new Error("Apikey is not correct"))
+  }
+});
 app.use("/api/tasks", tasks);
 app.use("/api/lists", lists);
 app.use(express.static("frontend/build"));
@@ -18,5 +34,5 @@ const server = app.listen(port, () => {
   crud
     .connect()
     .then(console.log("connected"))
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
 });

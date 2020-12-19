@@ -141,6 +141,15 @@ class crudRepository {
         });
       });
     }
+
+    static getApikeys() {
+      return new Promise((resolve, reject) => {
+        this.pool.query("SELECT * FROM apikey", (err, result) => {
+          if (err) reject(err);
+          resolve(result);
+        })
+      })
+    }
 }
 
 module.exports = crudRepository

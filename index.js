@@ -18,7 +18,7 @@ app.use('/api', async function (req, res, next) {
     }
   })
   if (!keyFound) {
-  res.status(400)
+  res.status(401)
   res.send({msg: "Apikey is not correct"})
   console.error(new Error("Apikey is not correct"))
   }

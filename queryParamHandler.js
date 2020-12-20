@@ -20,7 +20,7 @@ class queryParamHandler {
       this.reject(new Error("sort query should start with a - or +"));
     }
 
-    const sortSet = new Set(["deadline", "name", "priority"]);
+    const sortSet = new Set(["deadline", "name", "priority", "is_done"]);
     if (!sortSet.has(orderBy)) {
       this.res.status(400);
       this.res.send({ msg: "You can only sort by deadline, name or priority" });

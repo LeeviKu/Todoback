@@ -29,15 +29,25 @@ class crudRepository {
 
   static findAllTasks(query, res) {
     return new Promise((resolve, reject) => {
-      const queryParams = { orderby: "", limit: "", offset: "", search: "", list: "", searchFromList: "" };
+      const queryParams = {
+        orderby: "",
+        limit: "",
+        offset: "",
+        search: "",
+        list: "",
+        searchFromList: "",
+      };
       this.paramHandler = new queryParamHandler(res, reject, this.pool);
 
       if (query.search && query.list) {
-        queryParams.searchFromList = this.paramHandler.searchFromList(query.search, query.list);
+        queryParams.searchFromList = this.paramHandler.searchFromList(
+          query.search,
+          query.list
+        );
       } else if (query.search) {
         queryParams.search = this.paramHandler.search(query.search);
       } else if (query.list) {
-        queryParams.list = this.paramHandler.list(query.list)
+        queryParams.list = this.paramHandler.list(query.list);
       }
 
       if (query.limit) {
@@ -55,21 +65,23 @@ class crudRepository {
         queryParams.orderby = this.paramHandler.sort(query.sort);
       }
 
-      console.log("SELECT * FROM task" +
-      queryParams.search +
-      queryParams.searchFromList + 
-      queryParams.list + 
-      queryParams.orderby +
-      queryParams.limit + 
-      queryParams.offset)
+      console.log(
+        "SELECT * FROM task" +
+          queryParams.search +
+          queryParams.searchFromList +
+          queryParams.list +
+          queryParams.orderby +
+          queryParams.limit +
+          queryParams.offset
+      );
 
       this.pool.query(
         "SELECT * FROM task" +
           queryParams.search +
-          queryParams.searchFromList + 
-          queryParams.list + 
+          queryParams.searchFromList +
+          queryParams.list +
           queryParams.orderby +
-          queryParams.limit + 
+          queryParams.limit +
           queryParams.offset,
         (err, result) => {
           if (err) reject(err);
@@ -108,16 +120,33 @@ class crudRepository {
 
   static saveList(name) {
     return new Promise((resolve, reject) => {
-      this.pool.query("INSERT INTO list SET list_name=?", name, (err, result) => {
-        if (err) reject(err);
-        resolve(result);
-      });
+      let duplicateCheckVar;
+      this.pool.query(
+        "SELECT * FROM list WHERE list_name=?",
+        name,
+        (err, result) => {
+          if (err) reject(err);
+          duplicateCheckVar = result;
+        }
+      );
+      if (typeof duplicateCheckVar.list_name !== "undefined") {
+        this.pool.query(
+          "INSERT INTO list SET list_name=?",
+          name,
+          (err, result) => {
+            if (err) reject(err);
+            resolve(result);
+          }
+        );
+      } else {
+        resolve();
+      }
     });
   }
 
   static findAllLists() {
     return new Promise((resolve, reject) => {
-      this.pool.query("SELECT * FROM list",(err, result) => {
+      this.pool.query("SELECT * FROM list", (err, result) => {
         if (err) reject(err);
         resolve(result);
       });
@@ -133,23 +162,23 @@ class crudRepository {
     });
   }
 
-    static deleteList(id) {
-      return new Promise((resolve, reject) => {
-        this.pool.query("DELETE FROM list WHERE id = ?", id, (err, result) => {
-          if (err) reject(err);
-          resolve(result);
-        });
+  static deleteList(id) {
+    return new Promise((resolve, reject) => {
+      this.pool.query("DELETE FROM list WHERE id = ?", id, (err, result) => {
+        if (err) reject(err);
+        resolve(result);
       });
-    }
+    });
+  }
 
-    static getApikeys() {
-      return new Promise((resolve, reject) => {
-        this.pool.query("SELECT * FROM apikey", (err, result) => {
-          if (err) reject(err);
-          resolve(result);
-        })
-      })
-    }
+  static getApikeys() {
+    return new Promise((resolve, reject) => {
+      this.pool.query("SELECT * FROM apikey", (err, result) => {
+        if (err) reject(err);
+        resolve(result);
+      });
+    });
+  }
 }
 
-module.exports = crudRepository
+module.exports = crudRepository;

@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
 
 router.delete("/:urlId([1-9]+$)", async (req, res) => {
   const id = Number(req.params.urlId);
-  const response = await crud.deleteList(id)
+  const response = await crud.deleteList(id);
   res.send(response);
 });
 

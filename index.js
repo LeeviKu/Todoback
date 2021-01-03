@@ -8,19 +8,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 // checks apikey
-app.use('/api', async function (req, res, next) {
+app.use("/api", async function (req, res, next) {
   let keyFound = false;
-  const apikeys = await crud.getApikeys()
+  const apikeys = await crud.getApikeys();
   await apikeys.map((key) => {
     if (key.apikey === Number(req.query.apikey)) {
       keyFound = true;
-      next()
+      next();
     }
-  })
+  });
   if (!keyFound) {
-  res.status(401)
-  res.send({msg: "Apikey is not correct"})
-  console.error(new Error("Apikey is not correct"))
+    res.status(401);
+    res.send({ msg: "Apikey is not correct" });
+    console.error(new Error("Apikey is not correct"));
   }
 });
 app.use("/api/tasks", tasks);

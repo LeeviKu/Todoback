@@ -119,7 +119,7 @@ class crudRepository {
   }
 
   static saveList(name) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       let duplicateCheckVar;
       this.pool.query(
         "SELECT * FROM list WHERE list_name=?",
@@ -127,20 +127,20 @@ class crudRepository {
         (err, result) => {
           if (err) reject(err);
           duplicateCheckVar = result;
+          if (duplicateCheckVar.length === 0 && name !== "") {
+            this.pool.query(
+              "INSERT INTO list SET list_name=?",
+              name,
+              (err, result) => {
+                if (err) reject(err);
+                resolve(result);
+              }
+            );
+          } else {
+            resolve();
+          }
         }
       );
-      if (typeof duplicateCheckVar.list_name !== "undefined") {
-        this.pool.query(
-          "INSERT INTO list SET list_name=?",
-          name,
-          (err, result) => {
-            if (err) reject(err);
-            resolve(result);
-          }
-        );
-      } else {
-        resolve();
-      }
     });
   }
 
